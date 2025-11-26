@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Tweet Filter by Country",
+  "version": "1.0",
+  "description": "Hides tweets from accounts originating in specified regions or countries, can automatically mute or even block accounts.",
+  "permissions": [
+    "storage",
+    "cookies"
+  ],
+  "host_permissions": [
+    "https://twitter.com/*",
+    "https://x.com/*",
+    "https://api.x.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://twitter.com/*",
+        "https://x.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Tweet Filter by Country",
+    "default_popup": "options.html",
+    "default_icon": {
+      "32": "icons/icon32.png",
+      "64": "icons/icon64.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "32": "icons/icon32.png",
+    "64": "icons/icon64.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
