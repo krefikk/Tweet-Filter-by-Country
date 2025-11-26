@@ -129,7 +129,7 @@ function applyHideAction(tweet, username, country = "", isAutoBlockActive = fals
         // Helper for creating show button
         const createShowBtn = () => {
             const btn = document.createElement('span');
-            btn.innerText = "Göster";
+            btn.innerText = "Show";
             btn.style.cssText = "color:#1da1f2; font-weight:bold; cursor:pointer;";
             btn.onclick = (e) => { e.stopPropagation(); revealTweet(); };
             return btn;
@@ -300,4 +300,5 @@ if (isExtensionContextAlive) {
     const observer = new MutationObserver(runScanner);
     observer.observe(document.body, { childList: true, subtree: true });
     setInterval(runScanner, 1000);
+
 }
