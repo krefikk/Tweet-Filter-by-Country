@@ -11,8 +11,8 @@ The extension intercepts the timeline DOM stream and verifies the origin country
 
 ### 2. Automated Moderation Actions
 Beyond visual filtering, the system offers optional automated moderation capabilities:<br>
-**Auto-Mute:** Automatically mutes users from restricted regions without interrupting the browsing flow.<br>
-**Auto-Block:** Instantly blocks users from restricted regions, removing them from the user's digital environment permanently.
+- **Auto-Mute:** Automatically mutes users from restricted regions without interrupting the browsing flow.<br>
+- **Auto-Block:** Instantly blocks users from restricted regions, removing them from the user's digital environment permanently.
 
 ### 3. Heuristic Anti-Ban Protection (Smart Throttling)
 To navigate X's strict API rate limits and bot detection systems, the extension employs a **Human Behavior Simulation algorithm**:<br>
