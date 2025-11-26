@@ -50,7 +50,7 @@ The project consists of three main components interacting asynchronously:<br>
 - **Background Service Worker:** Acts as the central processing unit. It manages the API request queue, handles token retrieval (ct0, auth_token), executes GraphQL queries, and maintains the local database. It strictly adheres to the "Circuit Breaker" protocols.<br>
 - **Options Interface:** A standalone page for user configuration, utilizing Chrome Storage API for state management and providing real-time statistics on blocked content.
 
-# Privacy & Security
+## Privacy & Security
 - **Client-Side Execution:** All data processing occurs locally within the user's browser.<br>
 - **No External Telemetry:** The extension does not communicate with any third-party servers. No user data, browsing history, or credentials are collected or transmitted.<br>
 - **Token Usage:** Authentication tokens are retrieved dynamically from the active session solely for the purpose of making authorized requests to X's internal endpoints on the user's behalf.<br>
