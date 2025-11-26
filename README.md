@@ -28,7 +28,7 @@ Recognizing the dynamic nature of infinite scrolling, the extension utilizes a L
 - **Zero-Latency Filtering:** Once a user account is analyzed, the data is stored in the browser's chrome.storage.local. Subsequent encounters with the same user are processed instantly (0ms latency) without triggering new API calls.<br>
 - **Efficiency:** This caching mechanism significantly reduces API load over time, making the extension faster the more it is used.
 
-# Installation
+## Installation
 This extension is built for **Chromium-based** browsers (Chrome, Edge, Opera, Brave):<br>
 **1.** Clone or download this repository.<br>
 **2.** Navigate to your browser's Extensions management page (e.g. chrome://extensions, opera://extensions).<br>
@@ -36,7 +36,7 @@ This extension is built for **Chromium-based** browsers (Chrome, Edge, Opera, Br
 **4.** Click Load unpacked.<br>
 **5.** Select the directory containing the extension files.
 
-# Configuration
+## Configuration
 Upon installation, access the **Options page** to configure the system:<br>
 - **Blocked Regions:** Select specific countries or regions to filter from the comprehensive list provided.<br>
 - **Whitelist:** Define specific usernames to exclude from filtering logic, regardless of their location.<br>
@@ -44,7 +44,7 @@ Upon installation, access the **Options page** to configure the system:<br>
 - **Safe Follows:** Enable protection for accounts you already follow to prevent accidental filtering.<br>
 - **Backup & Restore:** Export your configuration settings to a JSON file for backup or migration purposes.
 
-# Technical Architecture (For The Curious)
+## Technical Architecture (For The Curious)
 The project consists of three main components interacting asynchronously:<br>
 - **Content Script:** Monitors the DOM for new tweet elements (MutationObserver), calculates element visibility (IntersectionObserver), and manages the UI layer (placeholders, badges). It handles the client-side priority queue logic.<br>
 - **Background Service Worker:** Acts as the central processing unit. It manages the API request queue, handles token retrieval (ct0, auth_token), executes GraphQL queries, and maintains the local database. It strictly adheres to the "Circuit Breaker" protocols.<br>
@@ -55,9 +55,9 @@ The project consists of three main components interacting asynchronously:<br>
 - **No External Telemetry:** The extension does not communicate with any third-party servers. No user data, browsing history, or credentials are collected or transmitted.<br>
 - **Token Usage:** Authentication tokens are retrieved dynamically from the active session solely for the purpose of making authorized requests to X's internal endpoints on the user's behalf.<br>
 
-# Disclaimer
+## Disclaimer
 This project is an independent open-source initiative and is not affiliated with, endorsed by or connected to X Corp. The functionality relies on internal APIs which are subject to change. **Use this tool responsibly and at your own risk**.
 
-# License & Contribution
+## License & Contribution
 This project is licensed under Apache 2.0 License.<br>
 You can contribute the project or give feedback to solve problems via here or support page in the extension.
