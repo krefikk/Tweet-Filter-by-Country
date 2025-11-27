@@ -1,7 +1,9 @@
 // Dont get excited, these are not private keys
 const QID_ABOUT = "XRqGa7EeokUU5kppkh13EA";
+const QID_USER = "sLVLhk0bGj3GYdNimUOP4g";
+const QID_PSPOTLIGHTS = "mzoqrVGwk-YTSGME1dRfXQ";
 const BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA";
-const CACHE_KEY = 'userSystemLocationCache_FinalV4';
+const CACHE_KEY = 'userSystemLocationCache__';
 
 // General Variables
 let isSystemLocked = false;
@@ -65,8 +67,8 @@ async function processQueue() {
             }
         }
 
-        // Wait 3-4.5 seconds before sending a request to avoid hitting the rate limit.
-        const delay = Math.floor(Math.random() * 1500) + 3000;
+        // Wait 3.5-5 seconds before sending a request to avoid hitting the rate limit.
+        const delay = Math.floor(Math.random() * 1500) + 3500;
         await sleep(delay);
 
         if (requestQueue.length === 0) break;
@@ -95,8 +97,18 @@ async function processQueue() {
     isProcessingQueue = false;
 }
 
-// Send request to API to fetch the location of user
+// Send request to API to fetch the location and following status of user
 async function fetchUser(username) {
+    const cache = await getCache();
+
+    if (cache[username] && (Date.now() - cache[username].ts < 86400000)) {
+        return {
+            country: cache[username].country,
+            isFollowing: cache[username].isFollowing,
+            fromCache: true
+        };
+    }
+
     const csrfToken = await getCsrfToken();
     if (!csrfToken) return { country: null, error: "No Token" };
 
@@ -113,42 +125,54 @@ async function fetchUser(username) {
         "responsive_web_graphql_skip_user_profile_image_extensions_enabled": false,
         "responsive_web_graphql_timeline_navigation_enabled": true
     });
+    const urlAbout = `https://x.com/i/api/graphql/${QID_ABOUT}/AboutAccountQuery?variables=${encodeURIComponent(variables)}&features=${encodeURIComponent(features)}`;
 
-    const url = `https://x.com/i/api/graphql/${QID_ABOUT}/AboutAccountQuery?variables=${encodeURIComponent(variables)}&features=${encodeURIComponent(features)}`;
+    const varsPS = JSON.stringify({ "screen_name": username });
+    const urlPS = `https://x.com/i/api/graphql/${QID_PSPOTLIGHTS}/ProfileSpotlightsQuery?variables=${encodeURIComponent(varsPS)}`;
 
     try {
-        const resp = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'authorization': `Bearer ${BEARER_TOKEN}`,
-                'x-csrf-token': csrfToken,
-                'content-type': 'application/json'
-            }
-        });
+        const [respAbout, respPS] = await Promise.all([
+            fetch(urlAbout, {
+                method: 'GET',
+                headers: { 'authorization': `Bearer ${BEARER_TOKEN}`, 'x-csrf-token': csrfToken, 'content-type': 'application/json' }
+            }),
+            fetch(urlPS, {
+                method: 'GET',
+                headers: { 'authorization': `Bearer ${BEARER_TOKEN}`, 'x-csrf-token': csrfToken, 'content-type': 'application/json' }
+            })
+        ]);
 
-        // Check for possible errors
-        if (!resp.ok) {
-            if (resp.status === 429 || resp.status >= 500) {
-                return { country: null, error: "RATE_LIMIT" };
-            }
-            return { country: null, error: `Status ${resp.status}` };
+        if (respAbout.status === 429 || respPS.status === 429) {
+            return { country: null, error: "RATE_LIMIT" };
         }
 
-        // Fetch and return the country user based in
-        const json = await resp.json();
-        const about = json?.data?.user_result_by_screen_name?.result?.about_profile;
-        const country = about?.account_based_in;
+        // Read JSONs
+        const jsonAbout = respAbout.ok ? await respAbout.json() : {};
+        const jsonPS = respPS.ok ? await respPS.json() : {};
 
-        console.log(`[API] ${username} -> ${country || "NONE"}`);
+        const result = jsonAbout?.data?.user_result_by_screen_name?.result;
+        const country = result?.about_profile?.account_based_in;
 
-        const cache = await getCache();
-        cache[username] = { country: country, ts: Date.now() };
+        const resultPS = jsonPS?.data?.user_result_by_screen_name?.result;
+        const isFollowing = !!resultPS?.relationship_perspectives?.following === true;
+
+        if (isFollowing == undefined) {
+            isFollowing = true;
+        }
+
+        console.log(`[DualAPI] ${username} -> ${country || "NONE"} | Following: ${isFollowing}`);
+
+        cache[username] = {
+            country: country,
+            isFollowing: isFollowing,
+            ts: Date.now()
+        };
         await setCache(cache);
 
-        return { country: country, fromCache: false };
+        return { country: country, isFollowing: isFollowing, fromCache: false };
 
     } catch (err) {
-        return { country: null, error: err.toString() };
+        return { country: null, isFollowing: false, error: err.toString() };
     }
 }
 
