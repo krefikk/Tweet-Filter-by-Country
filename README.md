@@ -6,10 +6,8 @@ X Country Filter is a sophisticated browser extension engineered to curate the X
 Designed with performance and account safety as primary objectives, it implements intelligent **request throttling**, **LIFO queue architecture**, and **persistent local caching** to ensure a seamless and secure user experience.
 
 ## Screenshots
-<img src="https://i.hizliresim.com/otwz8qr.png" alt="screenshot_0" width="400" height="400">
-<img src="https://i.hizliresim.com/33i3amr.jpg" alt="screenshot_1" width="400" height="400">
-<img src="https://i.hizliresim.com/mu5xbdc.jpg" alt="screenshot_2" width="400" height="400">
-<img src="https://i.hizliresim.com/e2zutyf.png" alt="screenshot_3" width="400" height="400">
+<img src="https://i.hizliresim.com/otwz8qr.png" alt="screenshot_0" width="400" height="400"> <img src="https://i.hizliresim.com/33i3amr.jpg" alt="screenshot_1" width="400" height="400">
+<img src="https://i.hizliresim.com/mu5xbdc.jpg" alt="screenshot_2" width="400" height="400"> <img src="https://i.hizliresim.com/e2zutyf.png" alt="screenshot_3" width="400" height="400">
 
 ## Core Features
 ### 1. Precision Geo-Blocking
