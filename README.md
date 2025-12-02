@@ -5,6 +5,12 @@ Advanced Timeline Sanitization and Geo-Blocking Utility for X (Twitter).
 X Country Filter is a sophisticated browser extension engineered to curate the X timeline by filtering content based on the verified origin location of user accounts. Unlike rudimentary keyword blockers that rely on user-generated bio text, this tool leverages X's internal GraphQL APIs to ascertain the system-registered location of an account, providing highly accurate filtering capabilities.<br>
 Designed with performance and account safety as primary objectives, it implements intelligent **request throttling**, **LIFO queue architecture**, and **persistent local caching** to ensure a seamless and secure user experience.
 
+## Screenshots
+![Screenshot_-1](https://i.hizliresim.com/otwz8qr.png)
+![Screenshot_0](https://i.hizliresim.com/33i3amr.jpg)
+![Screenshot_1](https://i.hizliresim.com/mu5xbdc.jpg)
+![Screenshot_2](https://i.hizliresim.com/e2zutyf.png)
+
 ## Core Features
 ### 1. Precision Geo-Blocking
 The extension intercepts the timeline DOM stream and verifies the origin country or region of content creators against a user-defined blocklist. It distinguishes between user-declared locations and system-verified locations (e.g. App Store region, IP-based inference) for maximum accuracy.
